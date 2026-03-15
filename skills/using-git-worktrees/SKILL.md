@@ -15,6 +15,8 @@ Git worktrees create isolated workspaces sharing the same repository, allowing w
 
 ## Directory Selection Process
 
+Default to a project-local `.worktrees/` directory unless the repository already defines a different convention.
+
 Follow this priority order:
 
 ### 1. Check Existing Directories
@@ -27,26 +29,23 @@ ls -d worktrees 2>/dev/null      # Alternative
 
 **If found:** Use that directory. If both exist, `.worktrees` wins.
 
-### 2. Check CLAUDE.md
+### 2. Check CLAUDE.md / Repo Instructions
 
 ```bash
-grep -i "worktree.*director" CLAUDE.md 2>/dev/null
+grep -i "worktree.*director" CLAUDE.md AGENTS.md 2>/dev/null
 ```
 
 **If preference specified:** Use it without asking.
 
-### 3. Ask User
+### 3. Create `.worktrees/`
 
-If no directory exists and no CLAUDE.md preference:
+If no directory exists and no repo instruction specifies otherwise:
 
+```bash
+mkdir -p .worktrees
 ```
-No worktree directory found. Where should I create worktrees?
 
-1. .worktrees/ (project-local, hidden)
-2. ~/.config/superpowers/worktrees/<project-name>/ (global location)
-
-Which would you prefer?
-```
+Use `.worktrees/` without asking. Only ask the user if `.worktrees/` cannot be used safely.
 
 ## Safety Verification
 
@@ -148,7 +147,7 @@ Ready to implement <feature-name>
 | `.worktrees/` exists | Use it (verify ignored) |
 | `worktrees/` exists | Use it (verify ignored) |
 | Both exist | Use `.worktrees/` |
-| Neither exists | Check CLAUDE.md → Ask user |
+| Neither exists | Check repo instructions → create `.worktrees/` |
 | Directory not ignored | Add to .gitignore + commit |
 | Tests fail during baseline | Report failures + ask |
 | No package.json/Cargo.toml | Skip dependency install |
@@ -160,10 +159,10 @@ Ready to implement <feature-name>
 - **Problem:** Worktree contents get tracked, pollute git status
 - **Fix:** Always use `git check-ignore` before creating project-local worktree
 
-### Assuming directory location
+### Assuming a non-local directory
 
-- **Problem:** Creates inconsistency, violates project conventions
-- **Fix:** Follow priority: existing > CLAUDE.md > ask
+- **Problem:** Creates inconsistency and unnecessary sprawl when the repo has no preference
+- **Fix:** Follow priority: existing > repo instructions > `.worktrees/`
 
 ### Proceeding with failing tests
 
@@ -197,11 +196,11 @@ Ready to implement auth feature
 - Create worktree without verifying it's ignored (project-local)
 - Skip baseline test verification
 - Proceed with failing tests without asking
-- Assume directory location when ambiguous
-- Skip CLAUDE.md check
+- Assume a global directory when the repo has no preference
+- Skip repo instruction check
 
 **Always:**
-- Follow directory priority: existing > CLAUDE.md > ask
+- Follow directory priority: existing > repo instructions > `.worktrees/`
 - Verify directory is ignored for project-local
 - Auto-detect and run project setup
 - Verify clean test baseline

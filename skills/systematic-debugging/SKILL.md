@@ -188,6 +188,7 @@ You MUST complete each phase before proceeding to the next.
    - Test passes now?
    - No other tests broken?
    - Issue actually resolved?
+   - If code changed and verification passed, commit immediately unless the user explicitly said not to commit yet
 
 4. **If Fix Doesn't Work**
    - STOP
