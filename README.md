@@ -116,6 +116,8 @@ Start a new session in your chosen platform and ask for something that should tr
 
 **The agent checks for relevant skills before any task.** Mandatory workflows, not suggestions.
 
+**Verified feature work should be committed immediately unless the user explicitly says not to commit yet.**
+
 ## What's Inside
 
 ### Skills Library

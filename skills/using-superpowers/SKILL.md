@@ -113,3 +113,10 @@ The skill itself tells you which.
 ## User Instructions
 
 Instructions say WHAT, not HOW. "Add X" or "Fix Y" doesn't mean skip workflows.
+
+## Global Commit Rule
+
+When implementing or fixing a feature, treat a verified commit as part of completion.
+
+- After a feature is complete and verification passes, commit the work immediately unless the user explicitly says not to commit yet.
+- Do not leave completed feature work uncommitted by default.
