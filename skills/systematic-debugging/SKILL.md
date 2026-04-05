@@ -189,10 +189,12 @@ You MUST complete each phase before proceeding to the next.
    - No other tests broken?
    - Issue actually resolved?
    - If code changed and verification passed, commit immediately unless the user explicitly said not to commit yet
+   - If code changed but the fix is still exploratory, commit the checkpoint anyway if it preserves useful progress, but make the commit message explicitly say it is exploratory or unresolved
 
 4. **If Fix Doesn't Work**
    - STOP
    - Count: How many fixes have you tried?
+   - If the failed attempt changed code in a way worth keeping, commit it truthfully before the next attempt unless the user explicitly said not to commit yet
    - If < 3: Return to Phase 1, re-analyze with new information
    - **If ≥ 3: STOP and question the architecture (step 5 below)**
    - DON'T attempt Fix #4 without architectural discussion

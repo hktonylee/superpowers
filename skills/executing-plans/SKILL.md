@@ -27,8 +27,10 @@ For each task:
 1. Mark as in_progress
 2. Follow each step exactly (plan has bite-sized steps)
 3. Run verifications as specified
-4. If code changed and verification passed, commit immediately unless the user explicitly said not to commit yet
-5. Mark as completed
+4. If code changed, commit at each meaningful checkpoint unless the user explicitly said not to commit yet
+5. For completed work, verify before committing and use a normal completion-oriented message
+6. For partial exploratory work, commit with a message that clearly says it is exploratory or incomplete and summarize any verification that was or was not run
+7. Mark as completed
 
 ### Step 3: Complete Development
 
@@ -59,7 +61,8 @@ After all tasks complete and verified:
 - Review plan critically first
 - Follow plan steps exactly
 - Don't skip verifications
-- Persist verified work with commits instead of leaving it uncommitted between batches unless the user explicitly says not to
+- Persist meaningful progress with commits instead of leaving it uncommitted between batches unless the user explicitly says not to
+- Keep exploratory checkpoint commits truthful about unresolved status and verification state
 - Reference skills when plan says to
 - Stop when blocked, don't guess
 - Never start implementation on main/master branch without explicit user consent
