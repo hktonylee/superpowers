@@ -102,7 +102,7 @@ Start a new session in your chosen platform and ask for something that should tr
 
 1. **brainstorming** - Activates before writing code. Refines rough ideas through questions, explores alternatives, presents design in sections for validation. Saves design document.
 
-2. **using-git-worktrees** - Activates after design approval. Creates isolated workspace on new branch, runs project setup, verifies clean test baseline.
+2. **using-git-worktrees** - Activates before code-changing work in a git repository unless the user explicitly opts out. Creates isolated workspace on new branch, runs project setup, verifies clean test baseline.
 
 3. **writing-plans** - Activates with approved design. Breaks work into bite-sized tasks (2-5 minutes each). Every task has exact file paths, complete code, verification steps.
 
@@ -114,7 +114,7 @@ Start a new session in your chosen platform and ask for something that should tr
 
 7. **finishing-a-development-branch** - Activates when tasks complete. Verifies tests, presents options (merge/PR/keep/discard), cleans up worktree.
 
-**The agent checks for relevant skills before any task.** Mandatory workflows, not suggestions.
+**The agent checks for relevant skills before any task.** Mandatory workflows, not suggestions. Code-changing work in a git repository starts in a worktree by default.
 
 **Verified feature work should be committed immediately unless the user explicitly says not to commit yet.**
 
@@ -136,7 +136,7 @@ Start a new session in your chosen platform and ask for something that should tr
 - **dispatching-parallel-agents** - Concurrent subagent workflows
 - **requesting-code-review** - Pre-review checklist
 - **receiving-code-review** - Responding to feedback
-- **using-git-worktrees** - Parallel development branches
+- **using-git-worktrees** - Isolated workspaces for code-changing tasks
 - **finishing-a-development-branch** - Merge/PR decision workflow
 - **subagent-driven-development** - Fast iteration with two-stage review (spec compliance, then code quality)
 

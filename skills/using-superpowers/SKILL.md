@@ -91,16 +91,20 @@ These thoughts mean STOP—you're rationalizing:
 | "I'll just do this one thing first" | Check BEFORE doing anything. |
 | "This feels productive" | Undisciplined action wastes time. Skills prevent this. |
 | "I know what that means" | Knowing the concept ≠ using the skill. Invoke it. |
+| "This edit is too small for a worktree" | Code-changing git work needs workspace isolation unless the user explicitly opts out. |
 
 ## Skill Priority
 
 When multiple skills could apply, use this order:
 
 1. **Process skills first** (brainstorming, debugging) - these determine HOW to approach the task
-2. **Implementation skills second** (frontend-design, mcp-builder) - these guide execution
+2. **Workspace isolation next** (using-git-worktrees) - before any code-changing work in a git repository, unless the user explicitly says not to use a worktree or the task is read-only
+3. **Implementation skills after isolation** (frontend-design, mcp-builder, test-driven-development) - these guide execution
 
 "Let's build X" → brainstorming first, then implementation skills.
 "Fix this bug" → debugging first, then domain-specific skills.
+
+For code-changing tasks in a git repository, invoke `using-git-worktrees` before editing files. Read-only tasks such as reviews, explanations, searches, and planning do not need a worktree.
 
 ## Skill Types
 

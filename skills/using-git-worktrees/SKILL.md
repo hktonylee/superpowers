@@ -1,6 +1,6 @@
 ---
 name: using-git-worktrees
-description: Use before non-trivial implementation, config, infrastructure, workflow, documentation, or skill changes that need isolation from the current checkout, and before executing implementation plans - creates isolated git worktrees with smart directory selection and safety verification
+description: Use before any code-changing work in a git repository, unless the user explicitly says not to use a worktree or the task is read-only - creates isolated git worktrees with smart directory selection and safety verification
 ---
 
 # Using Git Worktrees
@@ -9,9 +9,11 @@ description: Use before non-trivial implementation, config, infrastructure, work
 
 Git worktrees create isolated workspaces sharing the same repository, allowing work on multiple branches simultaneously without switching.
 
-**Core principle:** Non-trivial changes require isolation; systematic directory selection + safety verification = reliable isolation.
+Use this skill before making code or documentation changes in a git repository. This includes feature work, bug fixes, refactors, tests, generated assets, skill updates, and implementation-plan execution.
 
-Use this skill before starting any non-trivial code, config, infrastructure, workflow, documentation, or skill change unless the user explicitly instructs you to work in the current checkout. Trivial read-only work, direct answers, typo fixes, or tiny single-step edits with no meaningful behavioral impact do not need a new worktree.
+Do not require a worktree for read-only tasks such as code review, explanation, search, status checks, or planning that does not edit files. If the user explicitly asks to work in the current checkout or says not to use a worktree, follow that instruction.
+
+**Core principle:** Systematic directory selection + safety verification = reliable isolation.
 
 **Announce at start:** "I'm using the using-git-worktrees skill to set up an isolated workspace."
 
@@ -153,6 +155,8 @@ Ready to implement <feature-name>
 | Directory not ignored | Add to .gitignore + commit |
 | Tests fail during baseline | Report failures + ask |
 | No package.json/Cargo.toml | Skip dependency install |
+| User explicitly says no worktree | Work in current checkout |
+| Read-only task | Do not create a worktree |
 
 ## Common Mistakes
 
@@ -200,6 +204,7 @@ Ready to implement auth feature
 - Proceed with failing tests without asking
 - Assume a global directory when the repo has no preference
 - Skip repo instruction check
+- Start code-changing work in the original checkout unless the user explicitly requested it
 
 **Always:**
 - Follow directory priority: existing > repo instructions > `.worktrees/`
@@ -214,6 +219,7 @@ Ready to implement auth feature
 - **subagent-driven-development** - REQUIRED before executing any tasks
 - **executing-plans** - REQUIRED before executing any tasks
 - Any skill needing isolated workspace
+- Any code-changing task in a git repository unless explicitly overridden by the user
 
 **Pairs with:**
 - **finishing-a-development-branch** - REQUIRED for cleanup after work complete

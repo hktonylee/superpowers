@@ -58,6 +58,7 @@ while [[ $# -gt 0 ]]; do
             echo ""
             echo "Tests:"
             echo "  test-subagent-driven-development.sh  Test skill loading and requirements"
+            echo "  test-using-git-worktrees.sh         Test worktree defaults"
             echo ""
             echo "Integration Tests (use --integration):"
             echo "  test-subagent-driven-development-integration.sh  Full workflow execution"
@@ -74,6 +75,7 @@ done
 # List of skill tests to run (fast unit tests)
 tests=(
     "test-subagent-driven-development.sh"
+    "test-using-git-worktrees.sh"
 )
 
 # Integration tests (slow, full execution)
