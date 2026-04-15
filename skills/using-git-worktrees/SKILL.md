@@ -1,6 +1,6 @@
 ---
 name: using-git-worktrees
-description: Use when starting feature work that needs isolation from current workspace or before executing implementation plans - creates isolated git worktrees with smart directory selection and safety verification
+description: Use before non-trivial implementation, config, infrastructure, workflow, documentation, or skill changes that need isolation from the current checkout, and before executing implementation plans - creates isolated git worktrees with smart directory selection and safety verification
 ---
 
 # Using Git Worktrees
@@ -9,7 +9,9 @@ description: Use when starting feature work that needs isolation from current wo
 
 Git worktrees create isolated workspaces sharing the same repository, allowing work on multiple branches simultaneously without switching.
 
-**Core principle:** Systematic directory selection + safety verification = reliable isolation.
+**Core principle:** Non-trivial changes require isolation; systematic directory selection + safety verification = reliable isolation.
+
+Use this skill before starting any non-trivial code, config, infrastructure, workflow, documentation, or skill change unless the user explicitly instructs you to work in the current checkout. Trivial read-only work, direct answers, typo fixes, or tiny single-step edits with no meaningful behavioral impact do not need a new worktree.
 
 **Announce at start:** "I'm using the using-git-worktrees skill to set up an isolated workspace."
 

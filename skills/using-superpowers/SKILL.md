@@ -114,6 +114,20 @@ The skill itself tells you which.
 
 Instructions say WHAT, not HOW. "Add X" or "Fix Y" doesn't mean skip workflows.
 
+## Global Worktree Rule
+
+Before making non-trivial implementation changes, create or switch into an isolated git worktree unless the user explicitly tells you to work in the current checkout.
+
+This applies to:
+- Code changes that add behavior, fix bugs, refactor structure, or touch shared modules
+- Configuration, infrastructure, workflow, or skill changes that affect future agent/tool behavior
+- Documentation changes tied to implementation plans, operating procedures, or release behavior
+- Any task expected to require multiple edits, verification passes, or checkpoint commits
+
+Trivial changes may stay in the current checkout when they are clearly low-risk and single-step, such as fixing a typo, answering a question, inspecting files, or making a tiny user-requested edit with no meaningful behavioral impact.
+
+If a task starts trivial but becomes non-trivial, stop and set up a worktree before continuing. Use `superpowers:using-git-worktrees` for the setup and follow its safety verification.
+
 ## Global Commit Rule
 
 When making code changes, treat commits as part of both progress tracking and completion.
