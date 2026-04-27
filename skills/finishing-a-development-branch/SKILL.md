@@ -9,7 +9,7 @@ description: Use when implementation is complete, all tests pass, and you need t
 
 Guide completion of development work by presenting clear options and handling chosen workflow.
 
-**Core principle:** Verify tests → Present options → Execute choice → Clean up.
+**Core principle:** Verify tests → Prefer local merge for completed features → Execute choice → Clean up.
 
 **Announce at start:** "I'm using the finishing-a-development-branch skill to complete this work."
 
@@ -48,12 +48,14 @@ Or ask: "This branch split from main - is that correct?"
 
 ### Step 3: Present Options
 
+For completed feature work in a worktree, option 1 is the default path unless the user explicitly wants a PR, wants to keep the branch, or wants to discard it.
+
 Present exactly these 4 options:
 
 ```
 Implementation complete. What would you like to do?
 
-1. Merge back to <base-branch> locally
+1. Merge back to <base-branch> locally (default for completed features)
 2. Push and create a Pull Request
 3. Keep the branch as-is (I'll handle it later)
 4. Discard this work
@@ -168,6 +170,10 @@ git worktree remove <worktree-path>
 - **Problem:** "What should I do next?" → ambiguous
 - **Fix:** Present exactly 4 structured options
 
+**Leaving completed work stranded**
+- **Problem:** Feature is done but remains only in the worktree branch
+- **Fix:** Treat local merge as the default completion path unless the user chooses PR or keep-as-is
+
 **Automatic worktree cleanup**
 - **Problem:** Remove worktree when might need it (Option 2, 3)
 - **Fix:** Only cleanup for Options 1 and 4
@@ -183,10 +189,12 @@ git worktree remove <worktree-path>
 - Merge without verifying tests on result
 - Delete work without confirmation
 - Force-push without explicit request
+- Leave completed feature work unmerged by default
 
 **Always:**
 - Verify tests before offering options
 - Present exactly 4 options
+- Default completed feature work to local merge unless the user chooses otherwise
 - Get typed confirmation for Option 4
 - Clean up worktree for Options 1 & 4 only
 

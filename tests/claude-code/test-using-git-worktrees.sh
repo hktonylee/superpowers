@@ -45,4 +45,22 @@ fi
 
 echo ""
 
+echo "Test 3: Feature completion merges worktree branch..."
+
+output=$(run_claude "After completing and verifying a feature in a git worktree, what should an agent do with the worktree branch?" 30)
+
+if assert_contains "$output" "merge\|merged" "Mentions merging completed feature work"; then
+    : # pass
+else
+    exit 1
+fi
+
+if assert_contains "$output" "base branch\|main\|master\|finishing-a-development-branch" "Mentions base branch or finishing workflow"; then
+    : # pass
+else
+    exit 1
+fi
+
+echo ""
+
 echo "=== All using-git-worktrees skill tests passed ==="
