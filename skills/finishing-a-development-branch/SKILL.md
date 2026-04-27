@@ -1,6 +1,6 @@
 ---
 name: finishing-a-development-branch
-description: Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by presenting structured options for merge, PR, or cleanup
+description: Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by presenting structured options for rebase, PR, or cleanup
 ---
 
 # Finishing a Development Branch
@@ -9,7 +9,7 @@ description: Use when implementation is complete, all tests pass, and you need t
 
 Guide completion of development work by presenting clear options and handling chosen workflow.
 
-**Core principle:** Verify tests → Prefer local merge for completed features → Execute choice → Clean up.
+**Core principle:** Verify tests -> Prefer local rebase for completed features -> Execute choice -> Clean up.
 
 **Announce at start:** "I'm using the finishing-a-development-branch skill to complete this work."
 
@@ -30,7 +30,7 @@ Tests failing (<N> failures). Must fix before completing:
 
 [Show failures]
 
-Cannot proceed with merge/PR until tests pass.
+Cannot proceed with rebase/PR until tests pass.
 ```
 
 Stop. Don't proceed to Step 2.
@@ -55,7 +55,7 @@ Present exactly these 4 options:
 ```
 Implementation complete. What would you like to do?
 
-1. Merge back to <base-branch> locally (default for completed features)
+1. Rebase back to <base-branch> locally (default for completed features)
 2. Push and create a Pull Request
 3. Keep the branch as-is (I'll handle it later)
 4. Discard this work
@@ -67,19 +67,22 @@ Which option?
 
 ### Step 4: Execute Choice
 
-#### Option 1: Merge Locally
+#### Option 1: Rebase Locally
 
 ```bash
-# Switch to base branch
+# Update base branch
 git checkout <base-branch>
+git pull --ff-only
 
-# Pull latest
-git pull
+# Rebase feature branch onto updated base
+git checkout <feature-branch>
+git rebase <base-branch>
 
-# Merge feature branch
-git merge <feature-branch>
+# Fast-forward base branch to rebased feature
+git checkout <base-branch>
+git merge --ff-only <feature-branch>
 
-# Verify tests on merged result
+# Verify tests on rebased result
 <test command>
 
 # If tests pass
@@ -153,9 +156,9 @@ git worktree remove <worktree-path>
 
 ## Quick Reference
 
-| Option | Merge | Push | Keep Worktree | Cleanup Branch |
+| Option | Rebase | Push | Keep Worktree | Cleanup Branch |
 |--------|-------|------|---------------|----------------|
-| 1. Merge locally | ✓ | - | - | ✓ |
+| 1. Rebase locally | ✓ | - | - | ✓ |
 | 2. Create PR | - | ✓ | ✓ | - |
 | 3. Keep as-is | - | - | ✓ | - |
 | 4. Discard | - | - | - | ✓ (force) |
@@ -163,7 +166,7 @@ git worktree remove <worktree-path>
 ## Common Mistakes
 
 **Skipping test verification**
-- **Problem:** Merge broken code, create failing PR
+- **Problem:** Integrate broken code, create failing PR
 - **Fix:** Always verify tests before offering options
 
 **Open-ended questions**
@@ -172,7 +175,7 @@ git worktree remove <worktree-path>
 
 **Leaving completed work stranded**
 - **Problem:** Feature is done but remains only in the worktree branch
-- **Fix:** Treat local merge as the default completion path unless the user chooses PR or keep-as-is
+- **Fix:** Treat local rebase as the default completion path unless the user chooses PR or keep-as-is
 
 **Automatic worktree cleanup**
 - **Problem:** Remove worktree when might need it (Option 2, 3)
@@ -186,15 +189,15 @@ git worktree remove <worktree-path>
 
 **Never:**
 - Proceed with failing tests
-- Merge without verifying tests on result
+- Rebase without verifying tests on result
 - Delete work without confirmation
 - Force-push without explicit request
-- Leave completed feature work unmerged by default
+- Leave completed feature work unintegrated by default
 
 **Always:**
 - Verify tests before offering options
 - Present exactly 4 options
-- Default completed feature work to local merge unless the user chooses otherwise
+- Default completed feature work to local rebase unless the user chooses otherwise
 - Get typed confirmation for Option 4
 - Clean up worktree for Options 1 & 4 only
 

@@ -146,9 +146,9 @@ Ready to implement <feature-name>
 
 ## Completing Feature Work
 
-After implementing, verifying, and committing a feature in a worktree, merge the feature branch back into the base branch unless the user explicitly asks to keep the branch separate or open a PR instead.
+After implementing, verifying, and committing a feature in a worktree, rebase the feature branch back into the base branch unless the user explicitly asks to keep the branch separate or open a PR instead.
 
-Use `superpowers:finishing-a-development-branch` for this completion step. Its local merge workflow switches to the base branch, updates it, merges the feature branch, verifies the merged result, deletes the feature branch, and removes the worktree.
+Use `superpowers:finishing-a-development-branch` for this completion step. Its local rebase workflow updates the base branch, rebases the feature branch onto it, fast-forwards the base branch, verifies the result, deletes the feature branch, and removes the worktree.
 
 Do not leave a completed feature stranded in a worktree by default.
 
@@ -163,7 +163,7 @@ Do not leave a completed feature stranded in a worktree by default.
 | Directory not ignored | Add to .gitignore + commit |
 | Tests fail during baseline | Report failures + ask |
 | No package.json/Cargo.toml | Skip dependency install |
-| Feature complete and verified | Merge feature branch back to base via `finishing-a-development-branch` |
+| Feature complete and verified | Rebase feature branch back to base via `finishing-a-development-branch` |
 | User explicitly says no worktree | Work in current checkout |
 | Read-only task | Do not create a worktree |
 
@@ -214,14 +214,14 @@ Ready to implement auth feature
 - Assume a global directory when the repo has no preference
 - Skip repo instruction check
 - Start code-changing work in the original checkout unless the user explicitly requested it
-- Leave completed, verified feature work unmerged in a worktree unless the user chose PR or keep-as-is
+- Leave completed, verified feature work unintegrated in a worktree unless the user chose PR or keep-as-is
 
 **Always:**
 - Follow directory priority: existing > repo instructions > `.worktrees/`
 - Verify directory is ignored for project-local
 - Auto-detect and run project setup
 - Verify clean test baseline
-- Use `finishing-a-development-branch` to merge or otherwise explicitly dispose of completed feature work
+- Use `finishing-a-development-branch` to rebase or otherwise explicitly dispose of completed feature work
 
 ## Integration
 

@@ -45,11 +45,11 @@ fi
 
 echo ""
 
-echo "Test 3: Feature completion merges worktree branch..."
+echo "Test 3: Feature completion rebases worktree branch..."
 
 output=$(run_claude "After completing and verifying a feature in a git worktree, what should an agent do with the worktree branch?" 30)
 
-if assert_contains "$output" "merge\|merged" "Mentions merging completed feature work"; then
+if assert_contains "$output" "rebase\|rebased" "Mentions rebasing completed feature work"; then
     : # pass
 else
     exit 1
