@@ -1,6 +1,6 @@
 ---
-name: using-git-worktrees
-description: Use before any code-changing work in a git repository, unless the user explicitly says not to use a worktree or the task is read-only - creates isolated git worktrees with smart directory selection and safety verification
+name: "using-git-worktrees"
+description: "Use before any code-changing work in a git repository, unless the user explicitly says not to use a worktree or the task is read-only - creates isolated git worktrees with smart directory selection and safety verification"
 ---
 
 # Using Git Worktrees
