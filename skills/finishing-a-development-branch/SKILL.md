@@ -69,17 +69,21 @@ Which option?
 
 #### Option 1: Rebase Locally
 
+Resolve integration conflicts in the feature worktree before merging into the base branch. The feature branch must be rebased first while the worktree is still on the feature branch; only after the rebase is clean should the base branch be fast-forwarded.
+
 ```bash
-# Update base branch
-git checkout <base-branch>
+# Update base branch from the checkout that owns it
+cd <base-checkout-path>
 git pull --ff-only
 
-# Rebase feature branch onto updated base
-git checkout <feature-branch>
+# Rebase inside the worktree before merging
+cd <worktree-path>
 git rebase <base-branch>
+# If conflicts occur, resolve them here in the worktree, then continue:
+# git rebase --continue
 
 # Fast-forward base branch to rebased feature
-git checkout <base-branch>
+cd <base-checkout-path>
 git merge --ff-only <feature-branch>
 
 # Verify tests on rebased result
@@ -177,6 +181,10 @@ git worktree remove <worktree-path>
 - **Problem:** Feature is done but remains only in the worktree branch
 - **Fix:** Treat local rebase as the default completion path unless the user chooses PR or keep-as-is
 
+**Merging before rebasing**
+- **Problem:** Conflicts surface in the base checkout during merge
+- **Fix:** Rebase the feature branch inside the worktree first, resolve conflicts there, then fast-forward merge into the base branch
+
 **Automatic worktree cleanup**
 - **Problem:** Remove worktree when might need it (Option 2, 3)
 - **Fix:** Only cleanup for Options 1 and 4
@@ -198,6 +206,7 @@ git worktree remove <worktree-path>
 - Verify tests before offering options
 - Present exactly 4 options
 - Default completed feature work to local rebase unless the user chooses otherwise
+- Rebase the feature branch inside its worktree before merging into the base branch
 - Get typed confirmation for Option 4
 - Clean up worktree for Options 1 & 4 only
 

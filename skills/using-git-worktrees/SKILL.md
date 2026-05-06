@@ -13,6 +13,14 @@ Use this skill before making code or documentation changes in a git repository. 
 
 Do not require a worktree for read-only tasks such as code review, explanation, search, status checks, or planning that does not edit files. If the user explicitly asks to work in the current checkout or says not to use a worktree, follow that instruction.
 
+Before editing, check whether the current checkout has tracked changes:
+
+```bash
+git status --porcelain --untracked-files=no
+```
+
+If this command prints anything, create a worktree no matter how small the requested change is. This prevents multiple Codex sessions from editing over each other. Untracked files alone do not count as a dirty checkout for this rule.
+
 **Core principle:** Systematic directory selection + safety verification = reliable isolation.
 
 **Announce at start:** "I'm using the using-git-worktrees skill to set up an isolated workspace."
@@ -85,7 +93,14 @@ project=$(basename "$(git rev-parse --show-toplevel)")
 
 ### 2. Create Worktree
 
+Create the new worktree from the repository's current `HEAD` commit. A dirty original checkout is allowed and should not block worktree creation; uncommitted changes stay in the original checkout and are intentionally not copied into the new worktree.
+
+If `git status --porcelain --untracked-files=no` shows tracked modifications, additions, deletions, renames, or staged changes in the original checkout, creating a worktree is mandatory even for one-line edits or tiny commits.
+
 ```bash
+# Capture the base commit explicitly. This is the committed HEAD, not dirty working-tree state.
+base_commit=$(git rev-parse HEAD)
+
 # Determine full path
 case $LOCATION in
   .worktrees|worktrees)
@@ -97,7 +112,7 @@ case $LOCATION in
 esac
 
 # Create worktree with new branch
-git worktree add "$path" -b "$BRANCH_NAME"
+git worktree add "$path" -b "$BRANCH_NAME" "$base_commit"
 cd "$path"
 ```
 
@@ -148,7 +163,7 @@ Ready to implement <feature-name>
 
 After implementing, verifying, and committing a feature in a worktree, rebase the feature branch back into the base branch unless the user explicitly asks to keep the branch separate or open a PR instead.
 
-Use `superpowers:finishing-a-development-branch` for this completion step. Its local rebase workflow updates the base branch, rebases the feature branch onto it, fast-forwards the base branch, verifies the result, deletes the feature branch, and removes the worktree.
+Use `superpowers:finishing-a-development-branch` for this completion step. Its local rebase workflow updates the base branch, rebases the feature branch inside the worktree before any merge, resolves conflicts there, fast-forwards the base branch, verifies the result, deletes the feature branch, and removes the worktree.
 
 Do not leave a completed feature stranded in a worktree by default.
 
@@ -161,9 +176,11 @@ Do not leave a completed feature stranded in a worktree by default.
 | Both exist | Use `.worktrees/` |
 | Neither exists | Check repo instructions → create `.worktrees/` |
 | Directory not ignored | Add to .gitignore + commit |
+| Original checkout has tracked dirty changes | Must create worktree from current `HEAD`; do not copy uncommitted changes |
+| Original checkout only has untracked files | Worktree not required by dirty-checkout rule |
 | Tests fail during baseline | Report failures + ask |
 | No package.json/Cargo.toml | Skip dependency install |
-| Feature complete and verified | Rebase feature branch back to base via `finishing-a-development-branch` |
+| Feature complete and verified | Rebase feature branch inside the worktree before merging via `finishing-a-development-branch` |
 | User explicitly says no worktree | Work in current checkout |
 | Read-only task | Do not create a worktree |
 
@@ -188,6 +205,11 @@ Do not leave a completed feature stranded in a worktree by default.
 
 - **Problem:** Breaks on projects using different tools
 - **Fix:** Auto-detect from project files (package.json, etc.)
+
+### Treating tracked dirty changes as a blocker
+
+- **Problem:** Work stalls even though a worktree can safely start from committed `HEAD`
+- **Fix:** If `git status --porcelain --untracked-files=no` prints anything, create the worktree from `git rev-parse HEAD`; leave uncommitted changes in the original checkout
 
 ## Example Workflow
 
@@ -214,13 +236,20 @@ Ready to implement auth feature
 - Assume a global directory when the repo has no preference
 - Skip repo instruction check
 - Start code-changing work in the original checkout unless the user explicitly requested it
+- Treat untracked files alone as a dirty checkout
+- Work around tracked dirty changes by making "small" edits in the original checkout
+- Refuse to create a worktree only because the original checkout has tracked uncommitted changes
+- Merge a completed worktree into the base branch before rebasing it inside the worktree
 - Leave completed, verified feature work unintegrated in a worktree unless the user chose PR or keep-as-is
 
 **Always:**
 - Follow directory priority: existing > repo instructions > `.worktrees/`
 - Verify directory is ignored for project-local
+- Check dirty state with `git status --porcelain --untracked-files=no`
+- Create worktrees from the current `HEAD` commit when the original checkout has tracked dirty changes
 - Auto-detect and run project setup
 - Verify clean test baseline
+- Rebase completed feature branches inside their worktrees before merging them
 - Use `finishing-a-development-branch` to rebase or otherwise explicitly dispose of completed feature work
 
 ## Integration
