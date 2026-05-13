@@ -116,7 +116,7 @@ Start a new session in your chosen platform and ask for something that should tr
 
 **The agent checks for relevant skills before any task.** Mandatory workflows, not suggestions. Code-changing work in a git repository starts in a worktree by default.
 
-**Verified feature work should be committed immediately unless the user explicitly says not to commit yet.**
+**Verified feature work should be committed immediately unless the user explicitly says not to commit yet.** For Node.js projects, do not commit build artifacts such as `dist/` or JavaScript files generated from matching TypeScript sources.
 
 ## What's Inside
 

@@ -140,4 +140,5 @@ When making code changes, treat commits as part of both progress tracking and co
 - After completing and verifying a feature in a worktree, rebase the feature branch back to the base branch via `superpowers:finishing-a-development-branch` unless the user explicitly chooses a PR or asks to keep the branch separate.
 - Commit meaningful partial exploratory edits too, not just finished work.
 - Exploratory commits must describe the current status honestly and must not imply the work is complete, fixed, or passing unless that has been verified.
+- Before staging Node.js changes, exclude build artifacts such as `dist/` and generated JavaScript emitted from TypeScript sources, for example `*.js` files that have matching `*.ts` sources.
 - Do not leave meaningful code changes uncommitted by default.
