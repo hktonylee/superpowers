@@ -48,7 +48,7 @@ Or ask: "This branch split from main - is that correct?"
 
 ### Step 3: Present Options
 
-For completed feature work in a worktree, option 1 is the default path unless the user explicitly wants a PR, wants to keep the branch, or wants to discard it.
+For completed feature work in a worktree, including worktrees created for follow-up code questions, option 1 is the default path unless the user explicitly wants a PR, wants to keep the branch, or wants to discard it.
 
 Present exactly these 4 options:
 

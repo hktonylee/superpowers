@@ -165,6 +165,8 @@ Ready to implement <feature-name>
 
 After implementing, verifying, and committing a feature in a worktree, rebase the feature branch back into the base branch unless the user explicitly asks to keep the branch separate or open a PR instead.
 
+A worktree created for a follow-up code question follows the same rule. If the follow-up work is finished and the user wants it completed, do not leave that worktree hanging; commit it, rebase it inside the worktree, fast-forward merge it into the base branch, verify the merged result, then clean up the branch and worktree.
+
 Use `superpowers:finishing-a-development-branch` for this completion step. Its local rebase workflow updates the base branch, rebases the feature branch inside the worktree before any merge, resolves conflicts there, fast-forwards the base branch, verifies the result, deletes the feature branch, and removes the worktree.
 
 Do not leave a completed feature stranded in a worktree by default.
