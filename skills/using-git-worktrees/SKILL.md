@@ -13,6 +13,8 @@ Use this skill before making code or documentation changes in a git repository. 
 
 Do not require a worktree for read-only tasks such as code review, explanation, search, status checks, or planning that does not edit files. If the user explicitly asks to work in the current checkout or says not to use a worktree, follow that instruction.
 
+Treat every follow-up code-changing request after a worktree is rebased/merged into the base branch as new worktree work. Create a fresh worktree from the updated base branch, or reuse an existing active worktree only when it still exists and clearly matches the follow-up. Do not continue by editing the base checkout just because the previous worktree was integrated.
+
 Before editing, check whether the current checkout has tracked changes:
 
 ```bash
@@ -167,6 +169,8 @@ Use `superpowers:finishing-a-development-branch` for this completion step. Its l
 
 Do not leave a completed feature stranded in a worktree by default.
 
+If the user immediately asks for a code-changing follow-up after integration, start this skill again. Reuse a preserved worktree only when the follow-up belongs on that same branch; otherwise create a new worktree from the updated base branch.
+
 ## Quick Reference
 
 | Situation | Action |
@@ -181,6 +185,7 @@ Do not leave a completed feature stranded in a worktree by default.
 | Tests fail during baseline | Report failures + ask |
 | No package.json/Cargo.toml | Skip dependency install |
 | Feature complete and verified | Rebase feature branch inside the worktree before merging via `finishing-a-development-branch` |
+| Follow-up code change after integrated worktree | Create new worktree from updated base, or reuse clearly matching active worktree |
 | User explicitly says no worktree | Work in current checkout |
 | Read-only task | Do not create a worktree |
 
@@ -241,6 +246,7 @@ Ready to implement auth feature
 - Refuse to create a worktree only because the original checkout has tracked uncommitted changes
 - Merge a completed worktree into the base branch before rebasing it inside the worktree
 - Leave completed, verified feature work unintegrated in a worktree unless the user chose PR or keep-as-is
+- Edit the base checkout for a follow-up code change just because the previous worktree was integrated
 
 **Always:**
 - Follow directory priority: existing > repo instructions > `.worktrees/`
@@ -251,6 +257,7 @@ Ready to implement auth feature
 - Verify clean test baseline
 - Rebase completed feature branches inside their worktrees before merging them
 - Use `finishing-a-development-branch` to rebase or otherwise explicitly dispose of completed feature work
+- Restart worktree setup for follow-up code changes after integration; reuse only a matching active worktree
 
 ## Integration
 

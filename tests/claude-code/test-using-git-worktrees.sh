@@ -63,4 +63,28 @@ fi
 
 echo ""
 
+echo "Test 4: Follow-up code changes after integration use worktrees..."
+
+output=$(run_claude "A feature worktree was rebased and merged back into main. The user now asks for a follow-up code change. Should the agent edit main directly, or create/reuse a worktree?" 30)
+
+if assert_contains "$output" "worktree" "Mentions worktree for follow-up code changes"; then
+    : # pass
+else
+    exit 1
+fi
+
+if assert_contains "$output" "create\|fresh\|new\|reuse\|existing" "Mentions create or reuse behavior"; then
+    : # pass
+else
+    exit 1
+fi
+
+if assert_contains "$output" "not.*main\|don't.*main\|do not.*main\|not.*base\|don't.*base\|do not.*base\|directly" "Does not edit base branch directly"; then
+    : # pass
+else
+    exit 1
+fi
+
+echo ""
+
 echo "=== All using-git-worktrees skill tests passed ==="

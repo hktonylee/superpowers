@@ -158,6 +158,8 @@ git worktree remove <worktree-path>
 
 **For Option 3:** Keep worktree.
 
+After Options 1 or 4 complete, any later code-changing follow-up must go through `using-git-worktrees` again. Create a new worktree from the updated base branch, or reuse a preserved active worktree only when it clearly matches the follow-up.
+
 ## Quick Reference
 
 | Option | Rebase | Push | Keep Worktree | Cleanup Branch |
@@ -189,6 +191,10 @@ git worktree remove <worktree-path>
 - **Problem:** Remove worktree when might need it (Option 2, 3)
 - **Fix:** Only cleanup for Options 1 and 4
 
+**Follow-up edits in base checkout**
+- **Problem:** After integration, next code change happens in the base checkout because the worktree was already merged
+- **Fix:** Treat follow-up code changes as new worktree work; create or reuse a matching active worktree
+
 **No confirmation for discard**
 - **Problem:** Accidentally delete work
 - **Fix:** Require typed "discard" confirmation
@@ -209,6 +215,7 @@ git worktree remove <worktree-path>
 - Rebase the feature branch inside its worktree before merging into the base branch
 - Get typed confirmation for Option 4
 - Clean up worktree for Options 1 & 4 only
+- Send later code-changing follow-ups back through `using-git-worktrees`
 
 ## Integration
 
