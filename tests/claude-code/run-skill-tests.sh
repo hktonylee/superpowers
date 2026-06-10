@@ -59,6 +59,7 @@ while [[ $# -gt 0 ]]; do
             echo "Tests:"
             echo "  test-worktree-default-policy.sh     Test worktree default policy"
             echo "  test-commit-verification-policy.sh  Test commit verification policy"
+            echo "  test-doc-artifact-paths.sh          Test docs artifact paths"
             echo "  test-subagent-driven-development.sh  Test skill loading and requirements"
             echo ""
             echo "Integration Tests (use --integration):"
@@ -77,6 +78,7 @@ done
 tests=(
     "test-worktree-default-policy.sh"
     "test-commit-verification-policy.sh"
+    "test-doc-artifact-paths.sh"
     "test-subagent-driven-development.sh"
 )
 
