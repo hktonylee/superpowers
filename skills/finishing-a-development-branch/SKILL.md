@@ -1,6 +1,6 @@
 ---
 name: finishing-a-development-branch
-description: Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by presenting structured options for merge, PR, or cleanup
+description: Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by presenting structured options for rebase, PR, or cleanup
 ---
 
 # Finishing a Development Branch
@@ -9,7 +9,7 @@ description: Use when implementation is complete, all tests pass, and you need t
 
 Guide completion of development work by presenting clear options and handling chosen workflow.
 
-**Core principle:** Verify tests → Detect environment → Present options → Execute choice → Clean up.
+**Core principle:** Verify tests → Detect environment → Prefer local rebase for completed features → Execute choice → Clean up.
 
 **Announce at start:** "I'm using the finishing-a-development-branch skill to complete this work."
 
@@ -30,7 +30,7 @@ Tests failing (<N> failures). Must fix before completing:
 
 [Show failures]
 
-Cannot proceed with merge/PR until tests pass.
+Cannot proceed with rebase/PR until tests pass.
 ```
 
 Stop. Don't proceed to Step 2.
@@ -65,12 +65,14 @@ Or ask: "This branch split from main - is that correct?"
 
 ### Step 4: Present Options
 
+For completed feature work in a worktree, including worktrees created for follow-up code questions, option 1 is the default path unless the user explicitly wants a PR, wants to keep the branch, or wants to discard it.
+
 **Normal repo and named-branch worktree — present exactly these 4 options:**
 
 ```
 Implementation complete. What would you like to do?
 
-1. Merge back to <base-branch> locally
+1. Rebase back to <base-branch> locally
 2. Push and create a Pull Request
 3. Keep the branch as-is (I'll handle it later)
 4. Discard this work
@@ -94,22 +96,29 @@ Which option?
 
 ### Step 5: Execute Choice
 
-#### Option 1: Merge Locally
+#### Option 1: Rebase Locally
+
+Rebase the feature branch before merging into the base branch. Resolve integration conflicts in the feature worktree before merging. Only after the rebase is clean should the base branch be fast-forwarded.
 
 ```bash
-# Get main repo root for CWD safety
-MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-toplevel)
-cd "$MAIN_ROOT"
+# Update base branch from the checkout that owns it
+cd <base-checkout-path>
+git pull --ff-only
 
-# Merge first — verify success before removing anything
-git checkout <base-branch>
-git pull
-git merge <feature-branch>
+# Rebase inside the worktree before merging
+cd <worktree-path>
+git rebase <base-branch>
+# If conflicts occur, resolve them here in the worktree, then continue:
+# git rebase --continue
 
-# Verify tests on merged result
+# Fast-forward base branch to rebased feature
+cd <base-checkout-path>
+git merge --ff-only <feature-branch>
+
+# Verify tests on rebased result
 <test command>
 
-# Only after merge succeeds: cleanup worktree (Step 6), then delete branch
+# Only after rebase, merge, and verification succeed: cleanup worktree (Step 6), then delete branch
 ```
 
 Then: Cleanup worktree (Step 6), then delete branch:
@@ -142,6 +151,8 @@ EOF
 Report: "Keeping branch <name>. Worktree preserved at <path>."
 
 **Don't cleanup worktree.**
+
+After Options 1 or 4 complete, any later code-changing follow-up must go through `using-git-worktrees` again. Create a new worktree from the updated base branch, or reuse a preserved active worktree only when it clearly matches the follow-up.
 
 #### Option 4: Discard
 
@@ -193,9 +204,9 @@ git worktree prune  # Self-healing: clean up any stale registrations
 
 ## Quick Reference
 
-| Option | Merge | Push | Keep Worktree | Cleanup Branch |
+| Option | Rebase | Push | Keep Worktree | Cleanup Branch |
 |--------|-------|------|---------------|----------------|
-| 1. Merge locally | yes | - | - | yes |
+| 1. Rebase locally | yes | - | - | yes |
 | 2. Create PR | - | yes | yes | - |
 | 3. Keep as-is | - | - | yes | - |
 | 4. Discard | - | - | - | yes (force) |
@@ -203,7 +214,7 @@ git worktree prune  # Self-healing: clean up any stale registrations
 ## Common Mistakes
 
 **Skipping test verification**
-- **Problem:** Merge broken code, create failing PR
+- **Problem:** Integrate broken code, create failing PR
 - **Fix:** Always verify tests before offering options
 
 **Open-ended questions**
@@ -213,6 +224,18 @@ git worktree prune  # Self-healing: clean up any stale registrations
 **Cleaning up worktree for Option 2**
 - **Problem:** Remove worktree user needs for PR iteration
 - **Fix:** Only cleanup for Options 1 and 4
+
+**Leaving completed work stranded**
+- **Problem:** Feature is done but remains only in the worktree branch
+- **Fix:** Treat local rebase as the default completion path unless the user chooses PR or keep-as-is
+
+**Merging before rebasing**
+- **Problem:** Conflicts surface in the base checkout during merge
+- **Fix:** Rebase the feature branch inside the worktree first, resolve conflicts there, then fast-forward merge into the base branch
+
+**Follow-up edits in base checkout**
+- **Problem:** After integration, the next code change happens in the base checkout because the worktree was already merged
+- **Fix:** Treat follow-up code changes as new worktree work; create or reuse a matching active worktree
 
 **Deleting branch before removing worktree**
 - **Problem:** `git branch -d` fails because worktree still references the branch
@@ -234,18 +257,22 @@ git worktree prune  # Self-healing: clean up any stale registrations
 
 **Never:**
 - Proceed with failing tests
-- Merge without verifying tests on result
+- Rebase without verifying tests on result
 - Delete work without confirmation
 - Force-push without explicit request
 - Remove a worktree before confirming merge success
 - Clean up worktrees you didn't create (provenance check)
 - Run `git worktree remove` from inside the worktree
+- Leave completed feature work unintegrated by default
 
 **Always:**
 - Verify tests before offering options
 - Detect environment before presenting menu
 - Present exactly 4 options (or 3 for detached HEAD)
+- Default completed feature work to local rebase unless the user chooses otherwise
+- Rebase the feature branch inside its worktree before merging into the base branch
 - Get typed confirmation for Option 4
 - Clean up worktree for Options 1 & 4 only
 - `cd` to main repo root before worktree removal
 - Run `git worktree prune` after removal
+- Send later code-changing follow-ups back through `using-git-worktrees`
