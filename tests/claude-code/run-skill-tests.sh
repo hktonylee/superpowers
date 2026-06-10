@@ -58,6 +58,7 @@ while [[ $# -gt 0 ]]; do
             echo ""
             echo "Tests:"
             echo "  test-worktree-default-policy.sh     Test worktree default policy"
+            echo "  test-commit-verification-policy.sh  Test commit verification policy"
             echo "  test-subagent-driven-development.sh  Test skill loading and requirements"
             echo ""
             echo "Integration Tests (use --integration):"
@@ -75,6 +76,7 @@ done
 # List of skill tests to run (fast unit tests)
 tests=(
     "test-worktree-default-policy.sh"
+    "test-commit-verification-policy.sh"
     "test-subagent-driven-development.sh"
 )
 

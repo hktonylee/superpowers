@@ -1,6 +1,6 @@
 ---
 name: verification-before-completion
-description: Use when about to claim work is complete, fixed, or passing, before committing or creating PRs - requires running verification commands and confirming output before making any success claims; evidence before assertions always
+description: Use when about to claim work is complete, fixed, or passing, or before a release-quality commit or PR, to require fresh verification evidence and truthful status reporting
 ---
 
 # Verification Before Completion
@@ -20,6 +20,8 @@ NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE
 ```
 
 If you haven't run the verification command in this message, you cannot claim it passes.
+
+Exploratory checkpoint commits are allowed without completion-level verification, but they must be labeled truthfully and must not imply the work is complete, fixed, or passing.
 
 ## The Gate Function
 
@@ -53,7 +55,8 @@ Skip any step = lying, not verifying
 
 - Using "should", "probably", "seems to"
 - Expressing satisfaction before verification ("Great!", "Perfect!", "Done!", etc.)
-- About to commit/push/PR without verification
+- About to create a release-quality commit/push/PR without verification
+- About to commit exploratory work while implying it is complete or fixed
 - Trusting agent success reports
 - Relying on partial verification
 - Thinking "just this once"
@@ -120,9 +123,14 @@ From 24 failure memories:
 - ANY variation of success/completion claims
 - ANY expression of satisfaction
 - ANY positive statement about work state
-- Committing, PR creation, task completion
+- Release-quality commits, PR creation, task completion
 - Moving to next task
 - Delegating to agents
+
+**For exploratory checkpoint commits:**
+- Run any targeted verification that is cheap and directly relevant
+- If you cannot verify more yet, state that plainly
+- Do not describe the checkpoint as complete, fixed, or passing
 
 **Rule applies to:**
 - Exact phrases
@@ -132,7 +140,7 @@ From 24 failure memories:
 
 ## The Bottom Line
 
-**No shortcuts for verification.**
+**No shortcuts for verification, and no false completion claims.**
 
 Run the command. Read the output. THEN claim the result.
 
