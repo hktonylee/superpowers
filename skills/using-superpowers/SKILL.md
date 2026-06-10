@@ -128,7 +128,7 @@ This applies to:
 - Documentation changes tied to implementation plans, operating procedures, or release behavior
 - Any task expected to require multiple edits, verification passes, or checkpoint commits
 
-Trivial changes may stay in the current checkout when they are clearly low-risk and single-step, such as fixing a typo, answering a question, inspecting files, or making a tiny user-requested edit with no meaningful behavioral impact.
+Trivial changes may stay in the current checkout when they are clearly low-risk and single-step, such as fixing a typo, answering a question, inspecting files, or making a tiny user-requested edit with no meaningful behavioral impact. Commit the change immediately after changes made.
 
 If a task starts trivial but becomes non-trivial, stop and set up a worktree before continuing. Use `superpowers:using-git-worktrees` for the setup and follow its safety verification.
 
