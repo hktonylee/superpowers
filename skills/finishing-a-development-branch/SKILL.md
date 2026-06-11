@@ -1,13 +1,13 @@
 ---
 name: finishing-a-development-branch
-description: Use when implementation is complete, all tests pass, and you need to decide how to integrate the work - guides completion of development work by presenting structured options for rebase, PR, or cleanup
+description: Use when implementation is complete, all tests pass, and you need to decide how to integrate completed feature work, or the user already requested local rebase/merge after finishing
 ---
 
 # Finishing a Development Branch
 
 ## Overview
 
-Guide completion of development work by presenting clear options and handling chosen workflow.
+Guide completion of development work by honoring an already-chosen integration path or presenting clear options.
 
 **Core principle:** Verify tests → Detect environment → Prefer local rebase for completed features → Execute choice → Clean up.
 
@@ -57,15 +57,25 @@ This determines which menu to show and how cleanup works:
 ### Step 3: Determine Base Branch
 
 ```bash
-# Try common base branches
-git merge-base HEAD main 2>/dev/null || git merge-base HEAD master 2>/dev/null
+# Prefer main, then master, then the remote default branch.
+if git show-ref --verify --quiet refs/heads/main || git show-ref --verify --quiet refs/remotes/origin/main; then
+  BASE_BRANCH=main
+elif git show-ref --verify --quiet refs/heads/master || git show-ref --verify --quiet refs/remotes/origin/master; then
+  BASE_BRANCH=master
+else
+  BASE_BRANCH=$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | sed 's#^origin/##')
+fi
 ```
 
-Or ask: "This branch split from main - is that correct?"
+If no base branch can be determined, ask: "Which branch should this be rebased and merged into?"
 
-### Step 4: Present Options
+### Step 4: Choose or Confirm Integration Path
+
+If the user already requested "after finishing, rebase and merge the feature branch/worktree back to main" (or equivalent), treat that as Option 1 being preselected. Do not present the menu. Continue directly to Step 5, Option 1 using `<base-branch>`.
 
 For completed feature work in a worktree, including worktrees created for follow-up code questions, option 1 is the default path unless the user explicitly wants a PR, wants to keep the branch, or wants to discard it.
+
+If the user has not already selected an integration path, present options.
 
 **Normal repo and named-branch worktree — present exactly these 4 options:**
 
