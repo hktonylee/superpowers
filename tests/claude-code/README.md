@@ -82,6 +82,9 @@ echo "=== All tests passed ==="
 
 ### Fast Tests (run by default)
 
+#### test-brainstorming-optional-spec.sh
+Checks that approved simple designs may skip written specs and plans, while uncertain or complex tasks keep the full spec path.
+
 #### test-subagent-driven-development.sh
 Tests skill content and requirements (~2 minutes):
 - Skill loading and accessibility
