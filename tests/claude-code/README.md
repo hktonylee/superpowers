@@ -85,6 +85,9 @@ echo "=== All tests passed ==="
 #### test-brainstorming-optional-spec.sh
 Checks that approved simple designs may skip written specs and plans, while uncertain or complex tasks keep the full spec path.
 
+#### test-brainstorming-visual-companion-opt-in.sh
+Checks that brainstorming never offers the visual companion by default and only loads the companion guide after explicit user request.
+
 #### test-subagent-driven-development.sh
 Tests skill content and requirements (~2 minutes):
 - Skill loading and accessibility
