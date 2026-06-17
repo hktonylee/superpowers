@@ -88,6 +88,9 @@ Checks that approved simple designs may skip written specs and plans, while unce
 #### test-brainstorming-visual-companion-opt-in.sh
 Checks that brainstorming never offers the visual companion by default and only loads the companion guide after explicit user request.
 
+#### test-writing-plans-inline-execution.sh
+Checks that writing-plans hands off to executing-plans inline and does not offer execution choices.
+
 #### test-subagent-driven-development.sh
 Tests skill content and requirements (~2 minutes):
 - Skill loading and accessibility

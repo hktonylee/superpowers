@@ -61,6 +61,7 @@ while [[ $# -gt 0 ]]; do
             echo "  test-commit-verification-policy.sh  Test commit verification policy"
             echo "  test-doc-artifact-paths.sh          Test docs artifact paths"
             echo "  test-brainstorming-optional-spec.sh Test optional spec path"
+            echo "  test-writing-plans-inline-execution.sh Test inline plan execution handoff"
             echo "  test-brainstorming-visual-companion-opt-in.sh Test visual companion opt-in policy"
             echo "  test-subagent-driven-development.sh  Test skill loading and requirements"
             echo ""
@@ -82,6 +83,7 @@ tests=(
     "test-commit-verification-policy.sh"
     "test-doc-artifact-paths.sh"
     "test-brainstorming-optional-spec.sh"
+    "test-writing-plans-inline-execution.sh"
     "test-brainstorming-visual-companion-opt-in.sh"
     "test-subagent-driven-development.sh"
 )
