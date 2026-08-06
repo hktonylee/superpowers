@@ -188,7 +188,7 @@ You MUST complete each phase before proceeding to the next.
    - Test passes now?
    - No other tests broken?
    - Issue actually resolved?
-   - If code changed and verification passed, commit immediately unless the user explicitly said not to commit yet
+   - If code changed and verification passed, commit immediately unless the user explicitly said not to commit yet; use bracketed Title Case format like `[Fix] Handle Missing API Token`
    - If code changed but the fix is still exploratory, commit the checkpoint anyway if it preserves useful progress, but make the commit message explicitly say it is exploratory or unresolved
 
 4. **If Fix Doesn't Work**

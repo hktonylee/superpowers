@@ -28,7 +28,7 @@ For each task:
 2. Follow each step exactly (plan has bite-sized steps)
 3. Run verifications as specified
 4. If code changed, commit at each meaningful checkpoint unless the user explicitly said not to commit yet
-5. For completed work, verify before committing and use a normal completion-oriented message
+5. For completed work, verify before committing and use the bracketed Title Case format: `[Type] Title Case Summary`, for example `[Refactor] Remove legacy API repository module`
 6. For partial exploratory work, commit with a message that clearly says it is exploratory or incomplete and summarize any verification that was or was not run
 7. Mark as completed
 

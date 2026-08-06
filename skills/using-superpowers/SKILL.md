@@ -127,6 +127,7 @@ Instructions say WHAT, not HOW. "Add X" or "Fix Y" doesn't mean skip workflows.
 When making code changes, treat commits as part of both progress tracking and completion.
 
 - After a feature or fix is complete and verification passes, commit the work immediately unless the user explicitly says not to commit yet.
+- Commit titles must use bracketed, Title Case type format: `[Type] Title Case Summary`, for example `[Refactor] Remove legacy API repository module`. Common types: `[Feat]`, `[Fix]`, `[Refactor]`, `[Docs]`, `[Test]`, `[Chore]`. Do not use lowercase colon prefixes like `refactor:`.
 - Commit meaningful partial exploratory edits too, not just finished work.
 - Exploratory commits must describe the current status honestly and must not imply the work is complete, fixed, or passing unless that has been verified.
 - Before staging Node.js changes, exclude build artifacts such as `dist/` and generated JavaScript emitted from TypeScript sources, for example `*.js` files that have matching `*.ts` sources.
