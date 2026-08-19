@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Regression check: approved simple designs may skip written specs and plans.
+# Regression check: resolved designs continue without routine approval gates.
 
 set -euo pipefail
 
@@ -44,6 +44,22 @@ assert_contains "All simple-task criteria must be true" "simple path has explici
 assert_contains "Skip the written spec and implementation plan" "simple path skips artifacts"
 assert_contains "Invoke the relevant implementation skill directly" "simple path transitions directly"
 assert_contains "If any criterion is false or uncertain, use the full spec path." "uncertain tasks use full path"
+assert_contains "Only pause when multiple viable alternatives remain" "only unresolved alternatives require user choice"
+assert_contains "Continue without asking for approval" "resolved design continues automatically"
+assert_contains "Invoke writing-plans immediately after self-review" "reviewed spec transitions automatically"
+assert_contains "multiple viable approaches would materially change the result" "alternative gate requires material impact"
+assert_contains '"Multiple material\nalternatives?"' "flow applies material threshold"
+assert_contains "Do not manufacture alternatives" "dominated alternatives do not create a gate"
+assert_contains "If multiple material interpretations remain, return to the alternatives step" "self-review routes material ambiguity to user choice"
+assert_contains '"Spec reveals material\nalternatives?"' "flow checks material alternatives after self-review"
+assert_contains '"Spec reveals material\nalternatives?" -> "Present 2-3 alternatives" [label="yes"]' "flow returns review-time alternatives to user choice"
+assert_contains '"Spec reveals material\nalternatives?" -> "Invoke writing-plans skill" [label="no"]' "flow advances reviewed spec without material alternatives"
+assert_contains "continue automatically when no material alternatives remain" "checklist advances when material choices are resolved"
+assert_not_contains "user has approved it" "hard gate does not require routine approval"
+assert_not_contains "User Review Gate" "written spec has no user review gate"
+assert_not_contains "User approves design?" "flow has no routine design approval branch"
+assert_not_contains "User reviews spec?" "flow has no routine spec approval branch"
+assert_not_contains "If so, pick one and make it explicit." "self-review does not silently choose material interpretation"
 assert_not_contains "**The terminal state is invoking writing-plans.**" "writing-plans is not unconditional"
 
 if grep -Fq '"test-brainstorming-optional-spec.sh"' "$RUNNER"; then

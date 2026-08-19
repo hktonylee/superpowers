@@ -7,58 +7,60 @@ description: "You MUST use this before any creative work - creating features, bu
 
 Help turn ideas into fully formed designs and specs through natural collaborative dialogue.
 
-Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design and get user approval.
+Start by understanding the current project context, then ask questions one at a time only when answers affect the design. Once you understand what you're building, present the design and continue into planning or implementation.
 
 <HARD-GATE>
-Do NOT invoke any implementation skill, write any code, scaffold any project, or take any implementation action until you have presented a design and the user has approved it. This applies to EVERY project regardless of perceived simplicity.
+Do NOT invoke any implementation skill, write code, scaffold a project, or take implementation action before presenting a design and resolving consequential choices. Only pause when multiple viable alternatives remain and user selection would materially change the result. Continue without asking for approval once one design is clear.
 </HARD-GATE>
 
 ## Anti-Pattern: "This Is Too Simple To Need A Design"
 
-Every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it and get approval.
+Every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it before implementation.
 
 ## Checklist
 
 You MUST create a task for each of these items and complete them in order:
 
 1. **Explore project context** — check files, docs, recent commits
-2. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
-3. **Propose 2-3 approaches** — with trade-offs and your recommendation
-4. **Present design** — in sections scaled to their complexity, get user approval after each section
-5. **Choose artifact path** — simple approved designs may skip written spec and plan; all others use full path
+2. **Ask needed questions** — one at a time; skip questions whose answers do not affect the design
+3. **Resolve alternatives** — if multiple viable approaches would materially change the result, present 2-3 with trade-offs and wait for user selection
+4. **Present design** — in sections scaled to complexity; continue automatically when no material alternatives remain
+5. **Choose artifact path** — simple resolved designs may skip written spec and plan; all others use full path
 6. **Full path only: write design doc** — save to `docs/specs/YYYY-MM-DD-<topic>-design.md` and commit
 7. **Full path only: spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
-8. **Full path only: user reviews written spec** — ask user to review the spec file before proceeding
-9. **Transition to implementation** — simple path invokes relevant implementation skill; full path invokes writing-plans
+8. **Transition automatically** — simple path invokes relevant implementation skill; full path invokes writing-plans immediately after self-review
 
 ## Process Flow
 
 ```dot
 digraph brainstorming {
     "Explore project context" [shape=box];
-    "Ask clarifying questions" [shape=box];
-    "Propose 2-3 approaches" [shape=box];
-    "Present design sections" [shape=box];
-    "User approves design?" [shape=diamond];
+    "Ask needed questions" [shape=box];
+    "Multiple material\nalternatives?" [shape=diamond];
+    "Present 2-3 alternatives" [shape=box];
+    "User selects approach?" [shape=diamond];
+    "Present resolved design" [shape=box];
     "All simple-task\ncriteria true?" [shape=diamond];
     "Invoke relevant\nimplementation skill" [shape=doublecircle];
     "Write design doc" [shape=box];
     "Spec self-review\n(fix inline)" [shape=box];
-    "User reviews spec?" [shape=diamond];
+    "Spec reveals material\nalternatives?" [shape=diamond];
     "Invoke writing-plans skill" [shape=doublecircle];
 
-    "Explore project context" -> "Ask clarifying questions";
-    "Ask clarifying questions" -> "Propose 2-3 approaches";
-    "Propose 2-3 approaches" -> "Present design sections";
-    "Present design sections" -> "User approves design?";
-    "User approves design?" -> "Present design sections" [label="no, revise"];
-    "User approves design?" -> "All simple-task\ncriteria true?" [label="yes"];
+    "Explore project context" -> "Ask needed questions";
+    "Ask needed questions" -> "Multiple material\nalternatives?";
+    "Multiple material\nalternatives?" -> "Present 2-3 alternatives" [label="yes"];
+    "Present 2-3 alternatives" -> "User selects approach?";
+    "User selects approach?" -> "Present 2-3 alternatives" [label="no"];
+    "User selects approach?" -> "Present resolved design" [label="yes"];
+    "Multiple material\nalternatives?" -> "Present resolved design" [label="no"];
+    "Present resolved design" -> "All simple-task\ncriteria true?";
     "All simple-task\ncriteria true?" -> "Invoke relevant\nimplementation skill" [label="yes"];
     "All simple-task\ncriteria true?" -> "Write design doc" [label="no or uncertain"];
     "Write design doc" -> "Spec self-review\n(fix inline)";
-    "Spec self-review\n(fix inline)" -> "User reviews spec?";
-    "User reviews spec?" -> "Write design doc" [label="changes requested"];
-    "User reviews spec?" -> "Invoke writing-plans skill" [label="approved"];
+    "Spec self-review\n(fix inline)" -> "Spec reveals material\nalternatives?";
+    "Spec reveals material\nalternatives?" -> "Present 2-3 alternatives" [label="yes"];
+    "Spec reveals material\nalternatives?" -> "Invoke writing-plans skill" [label="no"];
 }
 ```
 
@@ -73,24 +75,25 @@ digraph brainstorming {
 - Check out the current project state first (files, docs, recent commits)
 - Before asking detailed questions, assess scope: if the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't spend questions refining details of a project that needs to be decomposed first.
 - If the project is too large for a single spec, help the user decompose into sub-projects: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first sub-project through the normal design flow. Each sub-project gets its own design → artifact-path decision → implementation cycle.
-- For appropriately-scoped projects, ask questions one at a time to refine the idea
+- For appropriately-scoped projects, ask questions one at a time only when answers could change the design
 - Prefer multiple choice questions when possible, but open-ended is fine too
 - Only one question per message - if a topic needs more exploration, break it into multiple questions
 - Focus on understanding: purpose, constraints, success criteria
+- Do not ask for confirmation of information already supplied or discoverable from project context
 
 **Exploring approaches:**
 
-- Propose 2-3 different approaches with trade-offs
-- Present options conversationally with your recommendation and reasoning
-- Lead with your recommended option and explain why
+- Do not manufacture alternatives. If one approach clearly fits, state it in the design and continue.
+- When multiple viable approaches would materially change behavior, architecture, cost, risk, or UX, present 2-3 options with trade-offs and a recommendation
+- Wait for user selection only in that multiple-alternative case
 
 **Presenting the design:**
 
 - Once you believe you understand what you're building, present the design
 - Scale each section to its complexity: a few sentences if straightforward, up to 200-300 words if nuanced
-- Ask after each section whether it looks right so far
 - Cover: architecture, components, data flow, error handling, testing
-- Be ready to go back and clarify if something doesn't make sense
+- Continue into the appropriate artifact path without a routine approval question
+- If the user interrupts with changes, revise the design before continuing
 
 **Design for isolation and clarity:**
 
@@ -113,14 +116,14 @@ All simple-task criteria must be true:
 - Scope is narrow, clear, and self-contained
 - Change is low-risk and easy to reverse
 - No architecture decisions, cross-system contracts, data migrations, security concerns, or irreversible actions
-- Implementation steps are obvious from approved design
+- Implementation steps are obvious from the resolved design
 
 If any criterion is false or uncertain, use the full spec path.
 
 For simple path:
 - Skip the written spec and implementation plan
 - Invoke the relevant implementation skill directly
-- Preserve approved design as implementation contract
+- Preserve the presented design as implementation contract
 
 For full path, continue with documentation and planning below.
 
@@ -137,30 +140,34 @@ After writing the spec document, look at it with fresh eyes:
 1. **Placeholder scan:** Any "TBD", "TODO", incomplete sections, or vague requirements? Fix them.
 2. **Internal consistency:** Do any sections contradict each other? Does the architecture match the feature descriptions?
 3. **Scope check:** Is this focused enough for a single implementation plan, or does it need decomposition?
-4. **Ambiguity check:** Could any requirement be interpreted two different ways? If so, pick one and make it explicit.
+4. **Ambiguity check:** Could any requirement be interpreted two different ways? If context makes one interpretation clearly fit, make it explicit. If multiple material interpretations remain, return to the alternatives step and wait for user selection.
 
 Fix any issues inline. No need to re-review — just fix and move on.
 
-**User Review Gate:**
-After the spec review loop passes, ask the user to review the written spec before proceeding:
-
-> "Spec written and committed to `<path>`. Please review it and let me know if you want to make any changes before we start writing out the implementation plan."
-
-Wait for the user's response. If they request changes, make them and re-run the spec review loop. Only proceed once the user approves.
+**Automatic Transition:**
+After the spec review loop passes, announce the spec path. Invoke writing-plans immediately after self-review. Do not ask for spec approval. Any multiple viable alternatives should have been resolved before writing the spec.
 
 **Implementation:**
 
 - Simple path: invoke relevant implementation skill directly
 - Full path: invoke writing-plans to create a detailed implementation plan; do not invoke another implementation skill first
 
-## Key Principles
+## Quick Reference
 
-- **One question at a time** - Don't overwhelm with multiple questions
-- **Multiple choice preferred** - Easier to answer than open-ended when possible
-- **YAGNI ruthlessly** - Remove unnecessary features from all designs
-- **Explore alternatives** - Always propose 2-3 approaches before settling
-- **Incremental validation** - Present design, get approval before moving on
-- **Be flexible** - Go back and clarify when something doesn't make sense
+| Situation | Next action |
+|---|---|
+| One clear design | Present it, then continue automatically |
+| Multiple viable alternatives with material trade-offs | Recommend one, present options, wait for user selection |
+| Simple resolved design | Skip spec and plan; invoke implementation skill |
+| Full spec self-reviewed | Invoke writing-plans without another approval gate |
+| User changes requirements mid-flow | Revise affected design before continuing |
+
+## Common Mistakes
+
+- Asking "Does this look right?" after each section when no choice remains
+- Inventing alternatives to satisfy a quota
+- Treating spec review as user approval instead of an internal quality check
+- Continuing while consequential alternatives remain unresolved
 
 ## Visual Companion
 
